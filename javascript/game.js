@@ -37,9 +37,11 @@ var letters = document.getElementById("letters")
 var solution = document.getElementById("solution")
 var youLose = document.getElementById("youLose")
 var playAgain= document.getElementById("playAgain")
+var container = document.getElementById("container")
 
 var test = "location"
 var guessCounter = 10
+var letterTracker = "1"
 
 
 
@@ -137,6 +139,7 @@ var guessCounter = 10
             //console.log (finalString)
         }
 
+
         return finalString.toUpperCase()
     }
 
@@ -145,11 +148,27 @@ var guessCounter = 10
 
     function howToLose (string, guess) {
         var x = 0
+        
         for(i = 0; i < string.length; i++){
             if (guess === string[i].toLowerCase()){
                 x++
-        
+                //letterTracker += guess
+                console.log(letterTracker)
+                break
             } 
+  
+        }
+        for (i = 0; i < letterTracker.length; i++){
+
+            if (guess === letterTracker[i]){
+                x++
+                //letterTracker += guess
+                console.log(letterTracker)
+                break 
+            }
+        }
+        if (letterTracker[letterTracker.length - 1] != guess){
+        letterTracker += guess
         }
         console.log("x="+x)
         if (x === 0){
@@ -166,20 +185,23 @@ var guessCounter = 10
 document.onkeyup = function(event){
     console.log (event)
     console.log (event.keyCode)
-     var x = 0
+    x = 0
+     
     if (event.keyCode < 93){
         if (event.keyCode > 64){
-
+                console.log("LT = "+letterTracker)
         howToLose(songTest, event.key)
         if(guessCounter === 0){
             guesses.textContent ="Guesses Left: " + guessCounter
-            youLose.classList.remove("hidden")
+            youLose.textContent =  "You Lose! Would you like to play again?"
+            container.classList.remove("hidden")
             playAgain.onclick = function (){
                 songTest = randomWord(songTitles)
                 solution.textContent = displayWords (songTest)
                 letters.textContent = ""
-                youLose.classList.add ("hidden")
+                container.classList.add ("hidden")
                 guessCounter=10
+                letterTracker="1"
            }
         }
 
@@ -196,5 +218,21 @@ document.onkeyup = function(event){
     }
     
     solution.textContent = guessWords(songTest, event.key, solution.textContent)
+    
+    console.log(solution.textContent.replace(/ /g, "").toLowerCase())
+    console.log(songTest.replace(/ /g, "").toLowerCase())
+
+    if (solution.textContent.replace(/ /g, "").toLowerCase() === songTest.replace(/ /g, "").toLowerCase()){
+        youLose.textContent = "You Win!!! Want to play again?"
+        container.classList.remove("hidden")
+            playAgain.onclick = function (){
+                songTest = randomWord(songTitles)
+                solution.textContent = displayWords (songTest)
+                letters.textContent = ""
+                container.classList.add ("hidden")
+                guessCounter=10
+                letterTracker="1"
+            }
+    }
     guesses.textContent ="Guesses Left: " + guessCounter
 }}
