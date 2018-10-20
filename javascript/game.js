@@ -42,6 +42,7 @@ var container = document.getElementById("container")
 var test = "location"
 var guessCounter = 10
 var letterTracker = "1"
+var winCounter = 0
 
 
 
@@ -101,6 +102,7 @@ var letterTracker = "1"
    
     
     solution.textContent = displayWords(songTest)
+    solution.setAttribute("class","hidden")
     
 
 
@@ -180,9 +182,27 @@ var letterTracker = "1"
 
 //to reward winners with a song!
 
+function winList (str1, str2, obj){
+   
+    
+    
+}
+
 
 //EVENTS***************************************************
+var stop = 1
 document.onkeyup = function(event){
+ 
+    
+    console.log("wincounter:"+winCounter)
+    console.log("stop:"+stop)
+    if(stop === 0){
+        return
+    }
+    if(winCounter === 0) {
+        solution.classList.remove("hidden")
+
+    }
     console.log (event)
     console.log (event.keyCode)
     x = 0
@@ -195,6 +215,7 @@ document.onkeyup = function(event){
             guesses.textContent ="Guesses Left: " + guessCounter
             youLose.textContent =  "You Lose! Would you like to play again?"
             container.classList.remove("hidden")
+            stop--
             playAgain.onclick = function (){
                 songTest = randomWord(songTitles)
                 solution.textContent = displayWords (songTest)
@@ -202,6 +223,8 @@ document.onkeyup = function(event){
                 container.classList.add ("hidden")
                 guessCounter=10
                 letterTracker="1"
+                guesses.textContent ="Guesses Left: " + guessCounter
+                stop++
            }
         }
 
@@ -225,13 +248,17 @@ document.onkeyup = function(event){
     if (solution.textContent.replace(/ /g, "").toLowerCase() === songTest.replace(/ /g, "").toLowerCase()){
         youLose.textContent = "You Win!!! Want to play again?"
         container.classList.remove("hidden")
+        stop--
             playAgain.onclick = function (){
                 songTest = randomWord(songTitles)
                 solution.textContent = displayWords (songTest)
                 letters.textContent = ""
                 container.classList.add ("hidden")
                 guessCounter=10
+                guesses.textContent ="Guesses Left: " + guessCounter
                 letterTracker="1"
+                wins.textContent = ++winCounter
+                stop++
             }
     }
     guesses.textContent ="Guesses Left: " + guessCounter

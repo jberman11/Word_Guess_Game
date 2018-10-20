@@ -1,3 +1,6 @@
 .hidden  {
     display: none;
 }
+.bkgimage {
+    background-image: url(/assets/images/strokes.jpg)
+}
